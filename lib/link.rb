@@ -6,13 +6,16 @@ class LinkItem
     @description = url
     @site_name = options[:site_name]
   end
-  def format_description
-    "#{@description}".ljust(25)
+
+  #method to format the site name message and variable
+   def format_name
+    @site_name ? 'Site Name: ' + @site_name : ''
   end
-  def format_name
-    @site_name ? @site_name : ""
-  end
+
+  #method to format the link description and name, use format_indent method from listable.rb
   def details
-    format_description + "site name: " + format_name
+    format_indent(type: 'Link:') +
+      format_indent(description: @description) +
+      format_name
   end
 end

@@ -1,22 +1,19 @@
 class EventItem
   # include Listable
+  require_relative "listable"
   attr_reader :description, :start_date, :end_date
 
+  #method to initialize and use the Chronic gem to parse the start and end dates
   def initialize(description, options={})
     @description = description
-    @start_date = Date.parse(options[:start_date]) if options[:start_date]
-    @end_date = Date.parse(options[:end_date]) if options[:end_date]
+    @start_date = Chronic.parse(options[:start_date]) if options[:start_date]
+    @end_date = Chronic.parse(options[:end_date]) if options[:end_date]
   end
-  def format_description
-    "#{@description}".ljust(25)
-  end
-  def format_date
-    dates = @start_date.strftime("%D") if @start_date
-    dates << " -- " + @end_date.strftime("%D") if @end_date
-    dates = "N/A" if !dates
-    return dates
-  end
+
   def details
-    format_description + "event dates: " + format_date
+    row = [] #define an array
+    row << format_description(@description)
+    row << "event dates: " + format_date(:dual_dates, start_date: @start_date, end_date: @end_date)
   end
+
 end
